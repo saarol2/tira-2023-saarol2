@@ -14,7 +14,8 @@ public class Algorithms {
 
    public static <T extends Comparable<T>> void insertionSort(T[] array) {
       // TODO: Student, implement this.
-   }
+      insertionSort(array, 0, array.length);
+      }
 
    ///////////////////////////////////////////
    // Insertion Sort for a slice of the array
@@ -22,6 +23,15 @@ public class Algorithms {
 
    public static <T extends Comparable<T>> void insertionSort(T[] array, int fromIndex, int toIndex) {
       // TODO: Student, implement this.
+      for (int i = fromIndex + 1; i < toIndex; i++){
+         T key = array[i];
+         int j = i -1;
+         while (j >= fromIndex && key.compareTo(array[j]) < 0) {
+            array[j + 1] = array[j];
+            j--;
+         }
+         array[j+1] = key;
+      }
    }
 
    //////////////////////////////////////////////////////////
@@ -46,6 +56,7 @@ public class Algorithms {
 
    public static <T> void reverse(T[] array) {
       // TODO: Student, implement this.
+      reverse(array, 0, array.length);
    }
 
    ///////////////////////////////////////////
@@ -54,6 +65,15 @@ public class Algorithms {
 
    public static <T> void reverse(T[] array, int fromIndex, int toIndex) {
       // TODO: Student, implement this.
+      int left = fromIndex;
+      int right = toIndex - 1;
+      while (left < right){
+         T temp = array[left];
+         array[left] = array[right];
+         array[right] = temp;
+         left++;
+         right--;
+      }
    }
 
 
