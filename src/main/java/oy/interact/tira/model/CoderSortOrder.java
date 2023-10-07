@@ -1,5 +1,7 @@
 package oy.interact.tira.model;
 
+import oy.interact.tira.student.CoderFullNameComparator;
+import oy.interact.tira.student.CoderNameComparator;
 import java.util.Comparator;
 
 public enum CoderSortOrder {
@@ -55,6 +57,17 @@ public enum CoderSortOrder {
 	// and coder names as required, below, following the instructions in the task!
 
 	public Comparator<Coder> getComparator() {
-		return null;
+		switch (this){
+			case FULLNAME_ASCENDING:
+				return new CoderFullNameComparator();
+			case FULLNAME_DESCENDING:
+				return new CoderFullNameComparator().reversed();
+			case CODER_NAME_ASCENDING:
+				return new CoderNameComparator();
+			case CODER_NAME_DESCENDING:
+				return new CoderNameComparator().reversed();
+			default:
+            	throw new IllegalArgumentException("Invalid sort order: " + this);
+		}
 	}
 }
