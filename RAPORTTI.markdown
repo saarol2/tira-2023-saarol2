@@ -80,7 +80,7 @@ public int compareTo(Coder another) {
 ```
 Tässä metodissa vertaillaan kahta Coder-oliota keskenään. Ensiksi verrataan olioiden sukunimiä. Jos this-olion sukunimi on aakkosjärjestyksessä pienempi verrattuna another-olioon, comparing on negatiivinen, ja jos se on suurempi, niin comparing on positiivinen. Jos olioilla on sama sukunimi, comparing on nolla ja siirrytään vertailemaan olioiden etunimiä. metodi palauttaa muuttujan comparing arvon.
 
-Viimeiseksi siirryin SimpleContainer-luokkaan toteuttamaan sort-metodin. Tässä metodissa siirrän for loopissa taulukon alkuun kaikki ne elementit, jotka eivät ole null-arvoisia. Sitten lajittelen taulukon alun ei-null elementit insertionSort-metodilla. Lopuksi muutan lajitellun taulukon jälkeiset elementit null-arvoisiksi.
+Viimeiseksi siirryin SimpleContainer-luokkaan toteuttamaan sort-metodin. Tämän toteutin kutstumalla Algorithms-luokan insertionSort-metodia indeksien 0 ja private-muuttujan count väliltä.
 
 Ensimmäinen tehtävä ei aiheuttanut suurempia ongelmia ohjelmoinnin osalta, mutta Githubin käytössä ja siinä miten se toimii VS coden kanssa oli aika paljon opeteltavaa (testit yms.). Tehtävän ohjeet olivat myös joissain kohdissa hieman hankalaa luettavaa.
 

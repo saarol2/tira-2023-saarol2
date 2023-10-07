@@ -184,28 +184,21 @@ public class SimpleContainer<E extends Comparable<E>> implements TIRAContainer<E
 	@Override
 	public void reverse() {
 		// TODO: Student: finish this as part of task 02.
+		Algorithms.reverse(array, 0, count);
+		sorted = true;
 	}
 
 	// TEACHERS: TODO: Remove the call to Algorithms sort method.
 	@Override
 	public void sort() {
 		// TODO: Student: finish this as part of task 02.
-		int newSize = 0;
-		for (int i = 0; i < count; i++) {
-			if (array[i] != null) {
-				array[newSize++] = array[i];
-			}
+		Algorithms.insertionSort(array, 0, count);
 		}
-		Algorithms.insertionSort(array, 0, newSize);
-		for (int i = newSize; i < count; i++) {
-			array[i] = null;
-		}
-	}
 
 	// TEACHERS: TODO: Remove the call to Algorithms sort method.
 	@Override
-	public void sort(Comparator<E> usingComparator) {
-		// TODO: Student: finish this as part of task 02.
+	public void sort(Comparator<E> comparator) {
+    Algorithms.insertionSort(array, 0, count, comparator);
+    sorted = true;
 	}
-
 }
