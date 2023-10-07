@@ -94,7 +94,7 @@ Toteutettuja hakualgoritmejä kutsutaan lineaarisiksi, koska niiden aikakompleks
 
 [!Fill-kaavio](tira-nfill.png)
 
-[!Search-kaavio](tira-search.png)
+[!Search-kaavio](tira-nsearch.png)
 
 Toisessa graafissa näkyy täyttöajan kasvu suhteessa n:n kasvuun ja toisessa graafissa on hakuajan kasvu suhteessa n:n kasvuun. Kuten kaavioista voi nähdä, aika kasvaa molemmissa tapauksissa suoraan verrannollisesti n:ään. Tästä voisi tehdä sen päätelmän, että SimpleContainerin täyttöön ja hakuun käytetyt algoritmit on aikakompleksisuusluokkaa O(n). Tämä varmistuu tarkastellessa täyttöön tarkoitettua SimpleContainer.Add metodia, missä on yksi for-silmukka, eli sekin on O(n). Haussa käytetyt algoritmit ovat niitä samoja, mitä tässä tehtävässä aiemmin toteutin, ja ne olivat kaikki myös aikakompleksisuusluokkaa O(n).
 
