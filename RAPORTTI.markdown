@@ -85,6 +85,18 @@ Viimeiseksi siirryin SimpleContainer-luokkaan toteuttamaan sort-metodin. Tämän
 Ensimmäinen tehtävä ei aiheuttanut suurempia ongelmia ohjelmoinnin osalta, mutta Githubin käytössä ja siinä miten se toimii VS coden kanssa oli aika paljon opeteltavaa (testit yms.). Tehtävän ohjeet olivat myös joissain kohdissa hieman hankalaa luettavaa.
 
 ## 02-TASK
+Tässä tehtävässä opin käyttämään comparator- ja predicate-rajapintoja. Niiden käyttäminen on loppujen lopuksi paljon yksinkertaisempaa, kuin se vaikutti ensi silmäykseltä. Tässäkään tehtävässä itse ohjelmointi ei tuottanut hankaluuksia, vaikka pitikin välillä palautella mieleen pari yksinkertaista java-kielen toimintoa.
+Kun TIRA Coders sovelluksessa kokeilee eri lajittelutapoja riityminen toisesta lajittelusta toiseen tapahtuu eri nopeutta, riippuen siitä mitä lajitellaan. Esim. Koko nimen perusteella laskevasta järjestyksestä koko nimen nousevaan järjestykseen siirtymisessä voi mennä alle millisekunti, mutta kun siirrytään koko nimen lajittelusta lempinimen lajitteluun, siinä voi mennä jopa yli kaksi sekuntia. Tämä johtuu siitä, että taulukon alkioiden järjestäminen päinvastaiseen järjestykseen käyttää lineaarista reverse-metodia (aikakompleksisuusluokka O(n)), kun muussa tapauksessa joudutaan käymään taas lisäyslajittelu-algoritmi läpi, mikä taas on aikakompleksisuusluokkaa O(n^2).
+reverse-metodin suorittamiseen vaadittu aika siis kasvaa lineaarisesti taulukon alkioiden mukaan, kun taas lisäyslajittelu-algoritmin suorittamiseen vaadittu aika kasvaa eksponentiaalisesti aina n^2, kun n = alkioiden määrä. Tämän takia yleisesti ottaen jos aineisto on valmiiksi lajiteltu, sen alkioiden järjestyksen kääntämiseen kannattaa käyttää reverse-algoritmia, koska se on tehokkaampi ajan käytön suhteen.
+Toteutettuja hakualgoritmejä kutsutaan lineaarisiksi, koska niiden aikakompleksisuusluokka on O(n), missä kuten aiemmin mainitsin, alkioiden määrä ja suorittamiseen kuluva aika ovat toisistaan lineaarisesti riippuvaisia.
+
+3. Askeleessa toteutin neljä eri lineaarista hakualgoritmia. Tämän jälkeen ajoin testin LinearFindTests. Se meni läpi ensimmäisellä yrityksellä ja tulosti konsoliin taulukon, missä on annettu aikamittauksia täyttöajasta ja hakuajasta eri n määrillä. Tein taulukoista kaksi eri graafia Excel-sovelluksessa, jotka näkyvät alapuolella.
+
+[!Fill-kaavio](tira-nfill.png)
+
+[!Search-kaavio](tira-search.png)
+
+Toisessa graafissa näkyy täyttöajan kasvu suhteessa n:n kasvuun ja toisessa graafissa on hakuajan kasvu suhteessa n:n kasvuun. Kuten kaavioista voi nähdä, aika kasvaa molemmissa tapauksissa suoraan verrannollisesti n:ään. Tästä voisi tehdä sen päätelmän, että SimpleContainerin täyttöön ja hakuun käytetyt algoritmit on aikakompleksisuusluokkaa O(n). Tämä varmistuu tarkastellessa täyttöön tarkoitettua SimpleContainer.Add metodia, missä on yksi for-silmukka, eli sekin on O(n). Haussa käytetyt algoritmit ovat niitä samoja, mitä tässä tehtävässä aiemmin toteutin, ja ne olivat kaikki myös aikakompleksisuusluokkaa O(n).
 
 ## 03-TASK
 
