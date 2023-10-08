@@ -99,6 +99,17 @@ Toteutettuja hakualgoritmejä kutsutaan lineaarisiksi, koska niiden aikakompleks
 Toisessa graafissa näkyy täyttöajan kasvu suhteessa n:n kasvuun ja toisessa graafissa on hakuajan kasvu suhteessa n:n kasvuun. Kuten kaavioista voi nähdä, aika kasvaa molemmissa tapauksissa suoraan verrannollisesti n:ään. Tästä voisi tehdä sen päätelmän, että SimpleContainerin täyttöön ja hakuun käytetyt algoritmit on aikakompleksisuusluokkaa O(n). Tämä varmistuu tarkastellessa täyttöön tarkoitettua SimpleContainer.Add metodia, missä on yksi for-silmukka, eli sekin on O(n). Haussa käytetyt algoritmit ovat niitä samoja, mitä tässä tehtävässä aiemmin toteutin, ja ne olivat kaikki myös aikakompleksisuusluokkaa O(n).
 
 ## 03-TASK
+Kolmannessa tehtävässä opin toteuttamaan puolitushakualgoritmin iteratiivisella tavalla. Se ei tuottanut sen suurempia vaikeuksia kun vähän aikaa pähkäili.
+
+Tehtävän kolmas askel sisältää paljon analysointia ja pohtimista, niistä seuraavaksi.
+Latasin TIRA Coders sovellukseen 50 000 koodarin tiedoston ja kokeilin hakumenetelmiä usealla eri tavalla. Huomasin että kun hakee listan alusta kummalla tavalla vain (search tai fast search), sen suorittamiseen ei kulunut edes yhtä millisekuntia. Kun taas menee listan loppupäähän ja kokeilee hakea vain sukunimeä, aikaa kului noin 30-40 ms. Kun taas laittoi hakukenttään koodarin koko nimen, sovellus löysi kyseisen koodarin alle millisekunnissa.
+Koodarin hakeminen koko nimellä on nopeampaa, kuin pelkällä sukunimellä hakeminen, sillä siinä käytetään puolitushakualgoritmiä kun taas muutoin käytetään lineaarista hakua. Puolitushakualgoritmin nopeuteen ei vaikuta se, missä kohtaa taulukkoa koodari on, kun taas lineaarinen haku käy yksi kerrallaan taulukon alusta päin koodarit, kunnes löytää "matchaavan" elementin taulukosta.
+
+[!Fill-graafi](task3-fill.png)
+[!Sort-graafi](task3-sort.png)
+[!Search-graafi](task3-search.png)
+
+Kuten piirtämistäni Excel-graafeista voi päätellä, täyttöaika ja lajitteluaika ovat lineaarisesti riippuvaisia n:n kasvusta (aikakompleksisuusluokka O(n)), eikä sillä onko lista nousevassa vai laskevassa järjestyksessä ole oikeastaan väliä tähän. Hakuaika kuitenkin ei ole lineaarisessa suhteessa n:n kasvuun. Hakuaika pienenee aina logaritmisesti n:n kasvuun verrattuna. Puolitushakualgoritmin aikakompleksisuusluokka on siis O(log n).
 
 ## 04-TASK
 

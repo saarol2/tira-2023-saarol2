@@ -94,7 +94,21 @@ public class Algorithms {
    ///////////////////////////////////////////
 
    public static <T extends Comparable<T>> int binarySearch(T aValue, T[] fromArray, int fromIndex, int toIndex) {
-      return -1;
+      while (fromIndex < toIndex){
+         int midIndex = fromIndex + (toIndex - fromIndex) / 2;
+         T value = fromArray[midIndex];
+         int compare = aValue.compareTo(value);
+         if (compare == 0){
+            return midIndex;
+         }
+         else if (compare < 0){
+            toIndex = midIndex;
+         }
+         else {
+            fromIndex = midIndex +1;
+         }
+      }
+   return -1;
    }
 
    ///////////////////////////////////////////
@@ -102,8 +116,23 @@ public class Algorithms {
    ///////////////////////////////////////////
 
    public static <T> int binarySearch(T aValue, T[] fromArray, int fromIndex, int toIndex, Comparator<T> comparator) {
-      return -1;
+      while (fromIndex < toIndex){
+         int midIndex = fromIndex + (toIndex - fromIndex) / 2;
+         T value = fromArray[midIndex];
+         int compare = comparator.compare(aValue, value);
+         if (compare == 0){
+            return midIndex;
+         }
+         else if (compare < 0){
+            toIndex = midIndex;
+         }
+         else {
+            fromIndex = midIndex +1;
+         }
+      }
+   return -1;
    }
+
 
    public static <E extends Comparable<E>> void fastSort(E [] array) {
       // TODO: Student, implement this.
