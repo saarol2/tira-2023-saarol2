@@ -49,21 +49,55 @@ public class ParenthesisChecker {
     * @throws StackAllocationException If the stack cannot be allocated or reallocated if necessary.
     */
     public static int checkParentheses(StackInterface<Character> stack, String fromString) throws ParenthesesException {
-      // TODO:
-      // for each character in the input string
-      //   if in between of quotes
-      //      ignore this character (but count column numbers)
-      //   if character is an opening parenthesis -- one of "([{"
-      //      push it into the stack (check for failure and throw an exception if so)
-      //   else if character is a closing parenthesis -- one of ")]}"
-      //      pop the latest opening parenthesis from the stack
-      //      if the popped item is null
-      //         throw an exception, there are too many closing parentheses 
-      //      check the popped opening parenthesis against the closing parenthesis read from the string
-      //      if they do not match -- opening was { but closing was ], for example.
-      //         throw an exception, wrong kind of parenthesis were in the text (e.g. "asfa ( asdf } sadf")
-      // if the stack is not empty after all the characters have been handled
-      //   throw an exception since the string has more opening than closing parentheses.
-      return 0;
+      int totalParentheses = 0;
+      int lineNumber = 1;
+      int columnNumber = 1;
+      boolean quotes = false;
+
+      for (char c : fromString.toCharArray()) {
+         if (c == '\n') {
+            lineNumber++;
+            columnNumber = 1;
+            continue;
+         }
+         if (c == '"') {
+            quotes = !quotes;
+            continue;
+         }
+         if (!quotes) {
+            if (c == '(' || c == '[' || c == '{') {
+            try{
+               stack.push(c);
+            }
+            catch (OutOfMemoryError e) {
+               throw new ParenthesesException("Push failed", lineNumber, columnNumber, ParenthesesException.STACK_FAILURE);
+            }
+               totalParentheses++;
+            }
+            else if (c == ')' || c == ']' || c == '}') {
+               if (!stack.isEmpty()) {
+                  try {
+                     Character popped = stack.pop();
+                     if (!isMatchingPair(popped, c)) {
+                        throw new ParenthesesException("Parentheses in wrong order", lineNumber, columnNumber, ParenthesesException.PARENTHESES_IN_WRONG_ORDER);
+                     }
+                  }
+                  catch (IllegalStateException e){
+                     throw new ParenthesesException("Too many closing parentheses", lineNumber, columnNumber, ParenthesesException.TOO_MANY_CLOSING_PARENTHESES);
+                  }
+                  totalParentheses++;
+               }
+            }
+         }
+         columnNumber++;
+      }
+      if (!stack.isEmpty()) {
+         throw new ParenthesesException("Too many opening parentheses", lineNumber, columnNumber, ParenthesesException.TOO_MANY_OPENING_PARENTHESES);
+      }
+      return totalParentheses;
+   }
+
+   private static boolean isMatchingPair(char opening, char closing) {
+      return (opening == '(' && closing == ')') || (opening == '[' && closing == ']') || (opening == '{' && closing == '}');
    }
 }
