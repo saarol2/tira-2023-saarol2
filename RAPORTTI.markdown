@@ -112,6 +112,11 @@ Koodarin hakeminen koko nimellä on nopeampaa, kuin pelkällä sukunimellä hake
 Kuten piirtämistäni Excel-graafeista voi päätellä, täyttöaika ja lajitteluaika ovat lineaarisesti riippuvaisia n:n kasvusta (aikakompleksisuusluokka O(n)), eikä sillä onko lista nousevassa vai laskevassa järjestyksessä ole oikeastaan väliä tähän. Hakuaika kuitenkin ei ole lineaarisessa suhteessa n:n kasvuun. Hakuaika pienenee aina logaritmisesti n:n kasvuun verrattuna. Puolitushakualgoritmin aikakompleksisuusluokka on siis O(log n).
 
 ## 04-TASK
+Tässä tehtävässä tutustuin pinotietorakenteisiin. Askeleessa yksi tein oman toteutukseni pinotietorakenteesta StackImplementation-luokkaan. Tämä ei tuottanut suurempia ongelmia, sillä siihen oli hyvät ohjeet niin tehtävän ohjeissa, kuin luentomateriaalissa. Haastavimpia olivat pop-ja push-metodit.
+Ohjeissa annettiin vaatimus, että kaikki pinotietorakenteen metodit pitävät olla aikakompleksisuusluokkaa O(1), paitsi toString O(n) (ja push O(n), kun joudutaan reallokoimaan.). Minun toteutukseni täyttää nämä vaatimukset, sillä capacity-, push-, pop-, peek-, size-, isEmpty-, ja clear-metodin suoritysaika on vakio riippumatta taulukon koosta. toString() on siksi O(n), koska siinä on for-silmukka, joka käy läpi kaikki pinon alkiot.
+
+2. Askeleessa toteutin ParenthesisChecker-koodin, mikä tarkistaa että tiedostossa on sulkuja oikea määrä oikeassa järjestyksessä. Tähän tehtävää vaatikin jo enemmän aikaa ja pähkäilyä, vaikka siihen olikin annettu kattavat ohjeet.
+Toteuttaessani sulkujentarkistus- algoritmin, oletin että tarkistettavan kohteen lainausmerkit ovat oikein. Vaikka algoritmissä käsitelläänkin myös lainausmerkkejä, se ei toimi oikein jos kohteen lainausmerkit ovat väärin. Jos vaikka lainausmerkkejä on pariton määrä, algoritmi ei enää laske sulkuja oikein, sillä se olettaa että vielä ollaan lainausmerkkejen sisällä, vaikka niin ei pitäisi olla.
 
 ## 05-TASK
 

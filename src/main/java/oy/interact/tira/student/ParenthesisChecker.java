@@ -66,27 +66,25 @@ public class ParenthesisChecker {
          }
          if (!quotes) {
             if (c == '(' || c == '[' || c == '{') {
-            try{
-               stack.push(c);
-            }
-            catch (OutOfMemoryError e) {
-               throw new ParenthesesException("Push failed", lineNumber, columnNumber, ParenthesesException.STACK_FAILURE);
-            }
+               try{
+                  stack.push(c);
+               }
+               catch (OutOfMemoryError e) {
+                  throw new ParenthesesException("Push failed", lineNumber, columnNumber, ParenthesesException.STACK_FAILURE);
+               }
                totalParentheses++;
             }
             else if (c == ')' || c == ']' || c == '}') {
-               if (!stack.isEmpty()) {
-                  try {
-                     Character popped = stack.pop();
-                     if (!isMatchingPair(popped, c)) {
-                        throw new ParenthesesException("Parentheses in wrong order", lineNumber, columnNumber, ParenthesesException.PARENTHESES_IN_WRONG_ORDER);
-                     }
+               try {
+                  Character popped = stack.pop();
+                  if (!isMatchingPair(popped, c)) {
+                     throw new ParenthesesException("Parentheses in wrong order", lineNumber, columnNumber, ParenthesesException.PARENTHESES_IN_WRONG_ORDER);
                   }
-                  catch (IllegalStateException e){
-                     throw new ParenthesesException("Too many closing parentheses", lineNumber, columnNumber, ParenthesesException.TOO_MANY_CLOSING_PARENTHESES);
-                  }
-                  totalParentheses++;
                }
+               catch (IllegalStateException e){
+                  throw new ParenthesesException("Too many closing parentheses", lineNumber, columnNumber, ParenthesesException.TOO_MANY_CLOSING_PARENTHESES);
+               }
+               totalParentheses++;
             }
          }
          columnNumber++;

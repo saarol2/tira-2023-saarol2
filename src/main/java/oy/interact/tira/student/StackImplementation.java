@@ -78,9 +78,7 @@ public StackImplementation(int capacity){
 
     @Override
     public void clear() {
-        for (int i = 0; i <= top; i++){
-            itemArray[i] = null;
-        }
+        itemArray = new Object[DEFAULT_STACK_SIZE];
         top = -1;
     }
     
