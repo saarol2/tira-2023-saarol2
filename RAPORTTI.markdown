@@ -119,6 +119,10 @@ Ohjeissa annettiin vaatimus, että kaikki pinotietorakenteen metodit pitävät o
 Toteuttaessani sulkujentarkistus- algoritmin, oletin että tarkistettavan kohteen lainausmerkit ovat oikein. Vaikka algoritmissä käsitelläänkin myös lainausmerkkejä, se ei toimi oikein jos kohteen lainausmerkit ovat väärin. Jos vaikka lainausmerkkejä on pariton määrä, algoritmi ei enää laske sulkuja oikein, sillä se olettaa että vielä ollaan lainausmerkkejen sisällä, vaikka niin ei pitäisi olla.
 
 ## 05-TASK
+Tässä tehtävässä opin käyttämään jonotietorakenteita. Toteutin tämän käyttämällä hyväksi taulukoita, joten osa pinotietorakenne-tehtävän metodeista oli helppo muokata tähän sopiviksi. Yllättäen vaikeinta tehtävässä oli reallokointi-metodin tekeminen, siihen meni eniten aikaa mutta sain koodin toimimaan lopulta ja kaikki metodit ovat vaadittua aikakompleksisuusluokkaa.
+Linkitetty lista on taulukkopohjaista toteutusta parempi muistin käytön suhteen, sillä sen kokoa ei tarvitse erikseen määritellä ja se voi muuttaa kokoa tarpeen mukaan. Aikatehokkuudessa linkitetty lista päihittää taulukkototeutuksen silloin, kun pitää poistaa tai lisätä elementtejä keskellä listaa. Tämä johtuu siitä että linkitetyssä listassa elementtejä ei tarvitse siirtää.
+Taulukkopohjainen toteutus on muistikompleksisuuden kannalta parempi, jos taulukko on heti alussa alustettu tarpeeksi suureksi (mutta ei kuitenkaan liian suureksi), jotta ei tarvitse reallokoida. Ajan kannalta taulukoiden käyttö on tehokkaampaa, kun lisätään tai poistetaan taulukon alusta tai lopusta.
+Toteuttamani jonotietorakenteen metodeissa ei ole käytetty silmukoita siellä missä niitä ei ole sallittu. Kaikki muut metodit ovat aikakompleksisuusluokkaa O(1), paitsi toString()- metodi ja yksityinen reallocate()- metodi, jotka ovat aikakompleksisuusluokkaa O(n).
 
 ## 06-TASK
 

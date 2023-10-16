@@ -7,15 +7,15 @@ public class StackImplementation <E> implements StackInterface <E> {
     private Object[] itemArray;
     private int top;
 
-public StackImplementation(){
-    itemArray = new Object[DEFAULT_STACK_SIZE];
-    top = -1;
-}
+    public StackImplementation(){
+        itemArray = new Object[DEFAULT_STACK_SIZE];
+        top = -1;
+    }
 
-public StackImplementation(int capacity){
-    itemArray = new Object[capacity];
-    top = -1;
-}
+    public StackImplementation(int capacity){
+        itemArray = new Object[capacity];
+        top = -1;
+    }
 
     @Override
     public int capacity() {
