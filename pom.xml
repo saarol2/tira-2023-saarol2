@@ -46,6 +46,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.11.0</version>
         <configuration>
+          <argLine>-Xss16m</argLine>
+          <argLine>-Xms4g -Xmx16g</argLine>
           <release>18</release>
         </configuration>
       </plugin>

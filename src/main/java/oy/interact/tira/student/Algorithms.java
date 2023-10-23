@@ -133,17 +133,67 @@ public class Algorithms {
    return -1;
    }
 
-
+   
    public static <E extends Comparable<E>> void fastSort(E [] array) {
-      // TODO: Student, implement this.
-   }
+      fastSort(array, 0, array.length - 1, Comparator.naturalOrder());
+   }   
 
    public static <E> void fastSort(E [] array, Comparator<E> comparator) {
-      // TODO: Student, implement this.
+      fastSort(array, 0, array.length - 1, comparator);
    }
 
    public static <E> void fastSort(E [] array, int fromIndex, int toIndex, Comparator<E> comparator) {
-      // TODO: Student, implement this.
+      if (fromIndex < toIndex){
+         int partitionIndex = partition(array, fromIndex, toIndex, comparator);
+         fastSort(array, fromIndex, partitionIndex, comparator);
+         fastSort(array, partitionIndex + 1, toIndex, comparator);
+      }
+   }
+
+   private static <E> int partition(E[] array, int fromIndex, int toIndex, Comparator<E> comparator){
+      E pivot = array[(toIndex - fromIndex) / 2 + fromIndex];
+      int low = fromIndex - 1;
+      int high = toIndex + 1;
+      while (true){
+         do{
+            low++;
+         }
+         while (comparator.compare(array[low], pivot) < 0);
+         do{
+            high--;
+         }
+         while (comparator.compare(array[high], pivot) > 0);
+         if (low >= high){
+            return high;
+         }
+         swap(array, low, high);
+      }
+   }
+
+   private static <E extends Comparable<E>> int partition(E[] array, int fromIndex, int toIndex){
+      E pivot = array[(toIndex - fromIndex) / 2 + fromIndex];
+      int low = fromIndex - 1;
+      int high = toIndex + 1;
+      while (true){
+         do{
+            low++;
+         }
+         while (array[low].compareTo(pivot) < 0);
+         do{
+            high--;
+         }
+         while (array[high].compareTo(pivot) > 0);
+         if (low >= high){
+            return high;
+         }
+         swap(array, low, high);
+      }
+   }
+   
+   private static <E> void swap(E[] array, int i, int j){
+      E temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
    }
 
 }
