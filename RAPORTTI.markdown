@@ -127,13 +127,19 @@ Toteuttamani jonotietorakenteen metodeissa ei ole käytetty silmukoita siellä m
 ## 06-TASK
 Tässä tehtävässä opin tekemään nopean lajittelualgoritmin. Päätin toteuttaa QuickSort- algoritmin Hoaren menetelmällä. Se eroaa QuickSortista siten, että partition-metodissa valitaan Pivot- arvo keskeltä taulukkoa, minkä jälkeen käytetään kahta indeksiä joista toinen liikkuu taulukkoa vasemmalle ja toinen oikealle.
 Kohtasin ongelmia tehtävän testien suorittamisessa. Nopean lajittelualgoritmin testin viimeinen kohta, missä testataan kahden miljoonan koodarin tiedostolla ei mennyt läpi ja ohjelma valitti keko- muistin loppuneen. Lopulta sain ratkaistua tämän ongelman kurssin ohjeita seuraten ja ajaen testit komentoriviltä.
+
 [!fastSort_testi](task6_fastSort_test.png)
+
 [!slowSort_testi](task6_slowSort_test.png)
+
 Kuten kuvista näkyy, testin mukaan toteuttamani QuickSort algoritmi toimii huomattavasti nopeammin, kuin aikaisemmin tehty insertionSort algoritmi. insertionSortin testissä kohdassa 6 ajettiin testi aineistolla, jonka koko on 100000. Algoritmi kävi taulukon elementit läpi nopeudella 6.837 ms/elementti. FastSort kävi saman tiedoston läpi 0.003 ms/elementti nopeudella. kahden miljoonan koodarin tiedoston testi kävikin vähän työläämmäksi tekemälleni algoritmille ja se selvisi siitä noin kolmessa minuutissa (saattaa myös johtua tietokoneestani). On se kuitenkin paljon nopeampi kuin mitä insertionSort olisi siitä selvinnyt.
 Tekemäni Hoaren QuickSort- algoritmin aikakompleksisuusluokka on yleensä O(n log n). Se kuitenkin riippuu siitä, mikä pivot-alkioksi valikoituu. Pahin tapaus olisi se, että pivot-alkioksi sattuu tulemaan taulukon pienin tai suurin alkio. Silloin algoritmin aikakompleksisuusluokka voi olla jopa O(n^2).
 Tämän takia siis QuickSort- algoritmi on niin paljon nopeampi kuin insertionSort- algoritmi, sillä insertionSort- algoritmin aikakompleksisuusluokka on O(n^2), mikä on huomattavasti huonompi kuin O(n log n).
+
 [!ms/element](task6_mselement.png)
+
 Tekemäni graafi havainnollistaa miten nopeasti insertionSort- algoritmin suoritusnopeus kasvaa verrattuna quickSort- algoritmiin. Huomioitavaaa on, että insertionSort- algoritmia ei edes testattu kuin 100000 koodarin tiedostolla maksimissaan.
+
 ## 07-TASK
 
 ## 08-TASK
