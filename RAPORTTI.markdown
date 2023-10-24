@@ -87,7 +87,7 @@ Ensimmäinen tehtävä ei aiheuttanut suurempia ongelmia ohjelmoinnin osalta, mu
 ## 02-TASK
 Tässä tehtävässä opin käyttämään comparator- ja predicate-rajapintoja. Niiden käyttäminen on loppujen lopuksi paljon yksinkertaisempaa, kuin se vaikutti ensi silmäykseltä. Tässäkään tehtävässä itse ohjelmointi ei tuottanut hankaluuksia, vaikka pitikin välillä palautella mieleen pari yksinkertaista java-kielen toimintoa.
 Kun TIRA Coders sovelluksessa kokeilee eri lajittelutapoja riityminen toisesta lajittelusta toiseen tapahtuu eri nopeutta, riippuen siitä mitä lajitellaan. Esim. Koko nimen perusteella laskevasta järjestyksestä koko nimen nousevaan järjestykseen siirtymisessä voi mennä alle millisekunti, mutta kun siirrytään koko nimen lajittelusta lempinimen lajitteluun, siinä voi mennä jopa yli kaksi sekuntia. Tämä johtuu siitä, että taulukon alkioiden järjestäminen päinvastaiseen järjestykseen käyttää lineaarista reverse-metodia (aikakompleksisuusluokka O(n)), kun muussa tapauksessa joudutaan käymään taas lisäyslajittelu-algoritmi läpi, mikä taas on aikakompleksisuusluokkaa O(n^2).
-reverse-metodin suorittamiseen vaadittu aika siis kasvaa lineaarisesti taulukon alkioiden mukaan, kun taas lisäyslajittelu-algoritmin suorittamiseen vaadittu aika kasvaa eksponentiaalisesti aina n^2, kun n = alkioiden määrä. Tämän takia yleisesti ottaen jos aineisto on valmiiksi lajiteltu, sen alkioiden järjestyksen kääntämiseen kannattaa käyttää reverse-algoritmia, koska se on tehokkaampi ajan käytön suhteen.
+reverse-metodin suorittamiseen vaadittu aika siis kasvaa lineaarisesti taulukon alkioiden mukaan, kun taas lisäyslajittelu-algoritmin suorittamiseen vaadittu aika kasvaa neliöllisesti aina n^2, kun n = alkioiden määrä. Tämän takia yleisesti ottaen jos aineisto on valmiiksi lajiteltu, sen alkioiden järjestyksen kääntämiseen kannattaa käyttää reverse-algoritmia, koska se on tehokkaampi ajan käytön suhteen.
 Toteutettuja hakualgoritmejä kutsutaan lineaarisiksi, koska niiden aikakompleksisuusluokka on O(n), missä kuten aiemmin mainitsin, alkioiden määrä ja suorittamiseen kuluva aika ovat toisistaan lineaarisesti riippuvaisia.
 
 3. Askeleessa toteutin neljä eri lineaarista hakualgoritmia. Tämän jälkeen ajoin testin LinearFindTests. Se meni läpi ensimmäisellä yrityksellä ja tulosti konsoliin taulukon, missä on annettu aikamittauksia täyttöajasta ja hakuajasta eri n määrillä. Tein taulukoista kaksi eri graafia Excel-sovelluksessa, jotka näkyvät alapuolella.
@@ -125,7 +125,15 @@ Taulukkopohjainen toteutus on muistikompleksisuuden kannalta parempi, jos tauluk
 Toteuttamani jonotietorakenteen metodeissa ei ole käytetty silmukoita siellä missä niitä ei ole sallittu. Kaikki muut metodit ovat aikakompleksisuusluokkaa O(1), paitsi toString()- metodi ja yksityinen reallocate()- metodi, jotka ovat aikakompleksisuusluokkaa O(n).
 
 ## 06-TASK
-
+Tässä tehtävässä opin tekemään nopean lajittelualgoritmin. Päätin toteuttaa QuickSort- algoritmin Hoaren menetelmällä. Se eroaa QuickSortista siten, että partition-metodissa valitaan Pivot- arvo keskeltä taulukkoa, minkä jälkeen käytetään kahta indeksiä joista toinen liikkuu taulukkoa vasemmalle ja toinen oikealle.
+Kohtasin ongelmia tehtävän testien suorittamisessa. Nopean lajittelualgoritmin testin viimeinen kohta, missä testataan kahden miljoonan koodarin tiedostolla ei mennyt läpi ja ohjelma valitti keko- muistin loppuneen. Lopulta sain ratkaistua tämän ongelman kurssin ohjeita seuraten ja ajaen testit komentoriviltä.
+[!fastSort_testi](task6_fastSort_test.png)
+[!slowSort_testi](task6_slowSort_test.png)
+Kuten kuvista näkyy, testin mukaan toteuttamani QuickSort algoritmi toimii huomattavasti nopeammin, kuin aikaisemmin tehty insertionSort algoritmi. insertionSortin testissä kohdassa 6 ajettiin testi aineistolla, jonka koko on 100000. Algoritmi kävi taulukon elementit läpi nopeudella 6.837 ms/elementti. FastSort kävi saman tiedoston läpi 0.003 ms/elementti nopeudella. kahden miljoonan koodarin tiedoston testi kävikin vähän työläämmäksi tekemälleni algoritmille ja se selvisi siitä noin kolmessa minuutissa (saattaa myös johtua tietokoneestani). On se kuitenkin paljon nopeampi kuin mitä insertionSort olisi siitä selvinnyt.
+Tekemäni Hoaren QuickSort- algoritmin aikakompleksisuusluokka on yleensä O(n log n). Se kuitenkin riippuu siitä, mikä pivot-alkioksi valikoituu. Pahin tapaus olisi se, että pivot-alkioksi sattuu tulemaan taulukon pienin tai suurin alkio. Silloin algoritmin aikakompleksisuusluokka voi olla jopa O(n^2).
+Tämän takia siis QuickSort- algoritmi on niin paljon nopeampi kuin insertionSort- algoritmi, sillä insertionSort- algoritmin aikakompleksisuusluokka on O(n^2), mikä on huomattavasti huonompi kuin O(n log n).
+[!ms/element](task6_mselement.png)
+Tekemäni graafi havainnollistaa miten nopeasti insertionSort- algoritmin suoritusnopeus kasvaa verrattuna quickSort- algoritmiin. Huomioitavaaa on, että insertionSort- algoritmia ei edes testattu kuin 100000 koodarin tiedostolla maksimissaan.
 ## 07-TASK
 
 ## 08-TASK
