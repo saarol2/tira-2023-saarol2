@@ -40,8 +40,9 @@ public class StackImplementation <E> implements StackInterface <E> {
 
     private void reallocate(int newCapacity){
         Object[] newItemArray = new Object[newCapacity];
-        int index = 0;
-        System.arraycopy(itemArray, 0, newItemArray, 0, itemArray.length);
+        for(int i = 0; i< itemArray.length; i++){
+            newItemArray[i] = itemArray[i];
+        }
         itemArray = newItemArray;
     }
 

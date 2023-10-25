@@ -50,20 +50,24 @@ public class QueueImplementation <E> implements QueueInterface <E>{
 
 
     private void reallocate(int newCapacity) {
-        Object[] newArray = new Object[newCapacity];
-        int oldArrayLength = queueArray.length;
-        int elementsAfterTail = oldArrayLength - tail;
-        System.arraycopy(queueArray, tail, newArray, 0, elementsAfterTail);
-        if (tail > 0){
-            System.arraycopy(queueArray, 0, newArray, elementsAfterTail, elementsAfterTail);
+        int nextIndex = 0;
+        Object[] newQueueArray = new Object[newCapacity];
+        for (int i = 0; i < capacity(); i++){
+            if (head < capacity()){
+                newQueueArray[i] = queueArray[head];
+                head++;
+            }
+            else{
+                newQueueArray[i] = queueArray[nextIndex];
+                nextIndex++;
+            }
         }
-        if (head < tail){
-            System.arraycopy(queueArray, head, newArray, 0, size);
-        }
+        tail = capacity();
         head = 0;
-        tail = oldArrayLength;
-        queueArray = newArray;
+        queueArray = newQueueArray;
     }
+
+
 
     @Override
     public E dequeue() throws IllegalStateException {
