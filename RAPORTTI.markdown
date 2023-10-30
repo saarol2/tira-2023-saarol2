@@ -92,9 +92,9 @@ Toteutettuja hakualgoritmejä kutsutaan lineaarisiksi, koska niiden aikakompleks
 
 3. Askeleessa toteutin neljä eri lineaarista hakualgoritmia. Tämän jälkeen ajoin testin LinearFindTests. Se meni läpi ensimmäisellä yrityksellä ja tulosti konsoliin taulukon, missä on annettu aikamittauksia täyttöajasta ja hakuajasta eri n määrillä. Tein taulukoista kaksi eri graafia Excel-sovelluksessa, jotka näkyvät alapuolella.
 
-[!Fill-kaavio](tira-nfill.png)
+![Fill-kaavio](tira-nfill.png)
 
-[!Search-kaavio](tira-nsearch.png)
+![Search-kaavio](tira-nsearch.png)
 
 Toisessa graafissa näkyy täyttöajan kasvu suhteessa n:n kasvuun ja toisessa graafissa on hakuajan kasvu suhteessa n:n kasvuun. Kuten kaavioista voi nähdä, aika kasvaa molemmissa tapauksissa suoraan verrannollisesti n:ään. Tästä voisi tehdä sen päätelmän, että SimpleContainerin täyttöön ja hakuun käytetyt algoritmit on aikakompleksisuusluokkaa O(n). Tämä varmistuu tarkastellessa täyttöön tarkoitettua SimpleContainer.Add metodia, missä on yksi for-silmukka, eli sekin on O(n). Haussa käytetyt algoritmit ovat niitä samoja, mitä tässä tehtävässä aiemmin toteutin, ja ne olivat kaikki myös aikakompleksisuusluokkaa O(n).
 
@@ -105,9 +105,9 @@ Tehtävän kolmas askel sisältää paljon analysointia ja pohtimista, niistä s
 Latasin TIRA Coders sovellukseen 50 000 koodarin tiedoston ja kokeilin hakumenetelmiä usealla eri tavalla. Huomasin että kun hakee listan alusta kummalla tavalla vain (search tai fast search), sen suorittamiseen ei kulunut edes yhtä millisekuntia. Kun taas menee listan loppupäähän ja kokeilee hakea vain sukunimeä, aikaa kului noin 30-40 ms. Kun taas laittoi hakukenttään koodarin koko nimen, sovellus löysi kyseisen koodarin alle millisekunnissa.
 Koodarin hakeminen koko nimellä on nopeampaa, kuin pelkällä sukunimellä hakeminen, sillä siinä käytetään puolitushakualgoritmiä kun taas muutoin käytetään lineaarista hakua. Puolitushakualgoritmin nopeuteen ei vaikuta se, missä kohtaa taulukkoa koodari on, kun taas lineaarinen haku käy yksi kerrallaan taulukon alusta päin koodarit, kunnes löytää "matchaavan" elementin taulukosta.
 
-[!Fill-graafi](task3-fill.png)
-[!Sort-graafi](task3-sort.png)
-[!Search-graafi](task3-search.png)
+![Fill-graafi](task3-fill.png)
+![Sort-graafi](task3-sort.png)
+![Search-graafi](task3-search.png)
 
 Kuten piirtämistäni Excel-graafeista voi päätellä, täyttöaika ja lajitteluaika ovat lineaarisesti riippuvaisia n:n kasvusta (aikakompleksisuusluokka O(n)), eikä sillä onko lista nousevassa vai laskevassa järjestyksessä ole oikeastaan väliä tähän. Hakuaika kuitenkin ei ole lineaarisessa suhteessa n:n kasvuun. Hakuaika pienenee aina logaritmisesti n:n kasvuun verrattuna. Puolitushakualgoritmin aikakompleksisuusluokka on siis O(log n).
 
@@ -128,15 +128,15 @@ Toteuttamani jonotietorakenteen metodeissa ei ole käytetty silmukoita siellä m
 Tässä tehtävässä opin tekemään nopean lajittelualgoritmin. Päätin toteuttaa QuickSort- algoritmin Hoaren menetelmällä. Se eroaa QuickSortista siten, että partition-metodissa valitaan Pivot- arvo keskeltä taulukkoa, minkä jälkeen käytetään kahta indeksiä joista toinen liikkuu taulukkoa vasemmalle ja toinen oikealle.
 Kohtasin ongelmia tehtävän testien suorittamisessa. Nopean lajittelualgoritmin testin viimeinen kohta, missä testataan kahden miljoonan koodarin tiedostolla ei mennyt läpi ja ohjelma valitti keko- muistin loppuneen. Lopulta sain ratkaistua tämän ongelman kurssin ohjeita seuraten ja ajaen testit komentoriviltä.
 
-[!fastSort_testi](task6_fastSort_test.png)
+![fastSort_testi](task6_fastSort_test.png)
 
-[!slowSort_testi](task6_slowSort_test.png)
+![slowSort_testi](task6_slowSort_test.png)
 
 Kuten kuvista näkyy, testin mukaan toteuttamani QuickSort algoritmi toimii huomattavasti nopeammin, kuin aikaisemmin tehty insertionSort algoritmi. insertionSortin testissä kohdassa 6 ajettiin testi aineistolla, jonka koko on 100000. Algoritmi kävi taulukon elementit läpi nopeudella 6.837 ms/elementti. FastSort kävi saman tiedoston läpi 0.003 ms/elementti nopeudella. kahden miljoonan koodarin tiedoston testi kävikin vähän työläämmäksi tekemälleni algoritmille ja se selvisi siitä noin kolmessa minuutissa (saattaa myös johtua tietokoneestani). On se kuitenkin paljon nopeampi kuin mitä insertionSort olisi siitä selvinnyt.
 Tekemäni Hoaren QuickSort- algoritmin aikakompleksisuusluokka on yleensä O(n log n). Se kuitenkin riippuu siitä, mikä pivot-alkioksi valikoituu. Pahin tapaus olisi se, että pivot-alkioksi sattuu tulemaan taulukon pienin tai suurin alkio. Silloin algoritmin aikakompleksisuusluokka voi olla jopa O(n^2).
 Tämän takia siis QuickSort- algoritmi on niin paljon nopeampi kuin insertionSort- algoritmi, sillä insertionSort- algoritmin aikakompleksisuusluokka on O(n^2), mikä on huomattavasti huonompi kuin O(n log n).
 
-[!ms/element](task6_mselement.png)
+![ms/element](task6_mselement.png)
 
 Tekemäni graafi havainnollistaa miten nopeasti insertionSort- algoritmin suoritusnopeus kasvaa verrattuna quickSort- algoritmiin. Huomioitavaaa on, että insertionSort- algoritmia ei edes testattu kuin 100000 koodarin tiedostolla maksimissaan.
 
