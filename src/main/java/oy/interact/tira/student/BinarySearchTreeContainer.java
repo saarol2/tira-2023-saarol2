@@ -10,63 +10,42 @@ import oy.interact.tira.util.Visitor;
 
 public class BinarySearchTreeContainer<K extends Comparable<K>, V> implements TIRAKeyedOrderedContainer<K, V> {
     TreeNode<K, V> root;
-    int count;
+    int size;
 
     private Comparator<K> comparator;
 
     public BinarySearchTreeContainer(Comparator<K> comparator) {
 		this.comparator = comparator;
         this.root = null;
-        this.count = 0;
+        this.size = 0;
 	}
 
     @Override
-    public void add(K key, V value) throws IllegalArgumentException {
-        if (key == null || value == null) {
+    public void add(K key, V value) throws OutOfMemoryError, IllegalArgumentException {
+        if (size > Integer.MAX_VALUE){
+            throw new OutOfMemoryError("Out of memory!");
+        }
+        if (key == null || value == null){
             throw new IllegalArgumentException("Key or value cannot be null");
         }
-        root = addHelper(root, key, value);
-        count++;
-    }
-
-    private TreeNode<K, V> addHelper(TreeNode<K, V> current, K key, V value) {
-        if (current == null) {
-            return new TreeNode<>(key, value);
+        if (root == null){
+            root = new TreeNode<>(key, value);
+            size++;
         }
-        int compare = comparator.compare(key, current.key);
-        if (compare < 0) {
-            current.leftChild = addHelper(current.leftChild, key, value);
-        } else if (compare > 0) {
-            current.rightChild = addHelper(current.rightChild, key, value);
-        } else {
-            current.value = value;
-            return current;
+        else{
+            if (root.insert(key, value, comparator)){
+                size++;
+            }
         }
-        current.size = 1 + calculateSize(current.leftChild) + calculateSize(current.rightChild);
-        return current;
     }
 
     @Override
     public V get(K key) throws IllegalArgumentException {
-        if (key == null) {
+        if (key.equals(null)) {
             throw new IllegalArgumentException("Key cannot be null");
         }
-        return getHelper(root, key);
+        return root.getV(key, comparator);
     }
-
-    private V getHelper(TreeNode<K, V> node, K key) {
-        if (node == null) {
-            return null;
-        }
-        int compareResult = comparator.compare(key, node.key);
-        if (compareResult < 0) {
-            return getHelper(node.leftChild, key);
-        } else if (compareResult > 0) {
-            return getHelper(node.rightChild, key);
-        } else {
-            return node.value;
-        }
-    }   
 
     @Override
     public V remove(K key) throws IllegalArgumentException {
@@ -76,33 +55,17 @@ public class BinarySearchTreeContainer<K extends Comparable<K>, V> implements TI
 
     @Override
     public V find(Predicate<V> searcher) {
-        return findValue(root, searcher);
-    }
-
-    private V findValue(TreeNode<K, V> node, Predicate<V> searcher) {
-        if (node == null) {
+        if (root == null){
             return null;
         }
-        if (searcher.test(node.value)) {
-            return node.value;
+        else{
+            return root.findV(searcher);
         }
-        V leftResult = findValue(node.leftChild, searcher);
-        if (leftResult != null) {
-            return leftResult;
-        }
-        return findValue(node.rightChild, searcher);
     }
     
     @Override
     public int size() {
-        return calculateSize(root);
-    }
-
-    private int calculateSize(TreeNode<K, V> node) {
-        if (node == null) {
-            return 0;
-        }
-        return 1 + calculateSize(node.leftChild) + calculateSize(node.rightChild);
+        return size;
     }
 
     @Override
@@ -126,49 +89,35 @@ public class BinarySearchTreeContainer<K extends Comparable<K>, V> implements TI
     public Pair<K, V>[] toArray() {
         Pair<K, V>[] array = new Pair[size()];
         AtomicInteger arrayIndex = new AtomicInteger(0);
-        toSortedArray(root, array, arrayIndex);
+        root.toSortedArray(array, arrayIndex);
         return array;
-    }
-
-    private void toSortedArray(TreeNode<K, V> node, Pair<K, V>[] array, AtomicInteger currentIndex) {
-        if (node == null) {
-            return;
-        }
-        toSortedArray(node.leftChild, array, currentIndex);
-        array[currentIndex.getAndIncrement()] = new Pair<>(node.key, node.value);
-        toSortedArray(node.rightChild, array, currentIndex);
     }
     
     @Override
     public Pair<K, V> getIndex(int index) throws IndexOutOfBoundsException {
-        if (index < 0 ||index >= count){
-            return null;
+        if (index < 0 || index >= size){
+            throw new IndexOutOfBoundsException("index should be more than 0 and less than BST size");
         }
-        return getIndexHelper(root, index);
-    }
-
-    private Pair<K,V> getIndexHelper(TreeNode<K,V> node, int index){
-        if (node == null){
-            return null;
-        }
-        int leftChildSize = calculateSize(node.leftChild);
-        if (index < leftChildSize){
-            return getIndexHelper(node.leftChild, index);
-        }
-        else if(index == leftChildSize){
-            return new Pair<>(node.key, node.value);
-        }
-        else{
-            return getIndexHelper(node.rightChild, index - leftChildSize - 1);
-        }
+        AtomicInteger atomicInt = new AtomicInteger(0);
+        return root.getPairFromIndex(index, atomicInt);
     }
 
     @Override
     public int indexOf(K itemKey) {
+        AtomicInteger indexCounter = new AtomicInteger(-1);
+        if (root == null){
+            return -1;
+        }
+        return root.getIndexOf(itemKey, indexCounter, comparator);
     }
 
     @Override
     public int findIndex(Predicate<V> searcher) {
+        AtomicInteger indexCount = new AtomicInteger(-1);
+        if (root == null){
+            return -1;
+        }
+        return root.findIndexOf(searcher, indexCount);
     }
 
     @Override
