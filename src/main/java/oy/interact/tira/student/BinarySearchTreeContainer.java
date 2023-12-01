@@ -9,8 +9,8 @@ import oy.interact.tira.util.TIRAKeyedOrderedContainer;
 import oy.interact.tira.util.Visitor;
 
 public class BinarySearchTreeContainer<K extends Comparable<K>, V> implements TIRAKeyedOrderedContainer<K, V> {
-    TreeNode<K, V> root;
-    int size;
+    private TreeNode<K, V> root;
+    private int size;
 
     private Comparator<K> comparator;
 
@@ -43,6 +43,9 @@ public class BinarySearchTreeContainer<K extends Comparable<K>, V> implements TI
     public V get(K key) throws IllegalArgumentException {
         if (key.equals(null)) {
             throw new IllegalArgumentException("Key cannot be null");
+        }
+        if (root == null){
+            return null;
         }
         return root.getV(key, comparator);
     }

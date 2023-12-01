@@ -4,8 +4,6 @@ import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
-import org.w3c.dom.Node;
-
 import oy.interact.tira.util.Pair;
 
 public class TreeNode<K extends Comparable<K>, V> {
@@ -30,14 +28,14 @@ public class TreeNode<K extends Comparable<K>, V> {
 		return value;
 	}
 
-    
     public boolean insert(K itemKey, V val, Comparator<K> comparator){
-        if(this.value.equals(val)){
-            this.value = val;
+        if(value.equals(val)){
+            value = val;
+            key = itemKey;
             return false;
         }
         boolean result = false;
-        if (comparator.compare(key, itemKey) <= 0){
+        if (comparator.compare(itemKey, key) <= 0){
             if(leftChild == null){
                 leftChild = new TreeNode<>(itemKey, val);
                 result = true;
@@ -59,17 +57,21 @@ public class TreeNode<K extends Comparable<K>, V> {
     }
 
     public V getV(K keyItem, Comparator<K> comparator){
-        V val = null;
-        int compareResult = comparator.compare(keyItem, key);
-        if (compareResult == 0){
-            val = getValue();
+        V result = null;
+        if (keyItem.equals(key)){
+            result = getValue();
         }
-        if (compareResult < 0 && leftChild != null){
-            leftChild.getV(keyItem, comparator);
-        } else if (compareResult > 0 && rightChild != null){
-            rightChild.getV(keyItem, comparator);
+        else if(comparator.compare(keyItem, key) <= 0){
+            if (leftChild != null){
+                result = leftChild.getV(keyItem, comparator);
+            }
         }
-        return val;
+        else{
+            if (rightChild != null){
+                result = rightChild.getV(keyItem, comparator);
+            }
+        }
+        return result;
     }
 
     public V findV(Predicate<V> searcher){
@@ -103,16 +105,20 @@ public class TreeNode<K extends Comparable<K>, V> {
 
     public Pair<K, V> getPairFromIndex(int indexNumber, AtomicInteger atomInt) {
         if (value != null && key != null) {
-            Pair<K, V> leftResult = leftChild.getPairFromIndex(indexNumber, atomInt);
-            if (leftResult != null) {
-                return leftResult;
+            if (leftChild != null){
+                Pair<K, V> leftResult = leftChild.getPairFromIndex(indexNumber, atomInt);
+                if (leftResult != null) {
+                    return leftResult;
                 }
+            }
             if (atomInt.getAndIncrement() == indexNumber){
                 return new Pair<>(key, value);
             }
-            Pair<K, V> rightResult = rightChild.getPairFromIndex(indexNumber, atomInt);
-            if (rightResult != null) {
-                return rightResult;
+            if (rightChild != null){
+                Pair<K, V> rightResult = rightChild.getPairFromIndex(indexNumber, atomInt);
+                if (rightResult != null) {
+                    return rightResult;
+                }
             }
         }
         return null;
