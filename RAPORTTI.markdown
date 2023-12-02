@@ -141,6 +141,49 @@ Tämän takia siis QuickSort- algoritmi on niin paljon nopeampi kuin insertionSo
 Tekemäni graafi havainnollistaa miten nopeasti insertionSort- algoritmin suoritusnopeus kasvaa verrattuna quickSort- algoritmiin. Huomioitavaaa on, että insertionSort- algoritmia ei edes testattu kuin 100000 koodarin tiedostolla maksimissaan.
 
 ## 07-TASK
+Tässä tehtävässä opin miten binäärinen hakupuu toimii, sekä siinä samalla lisäsin tietämystäni rekursiosta. Tämä tehtävä jo vaati minulta huomattavasti enemmän aiheeseen perehtymistä, enkä voinut alkaa samantien vain koodaamaan luettuani ohjeet. Onneksi kurssimateriaalista, luennoilta ja netistä löytyi paljon tietoa aiheesta ja myös esimerkkejä miten sen voi toteuttaa.
+Helpointa oli tehdä add ja get metodit. Vaikeinta tehtävässä oli saada indeksit pelaamaan oikein.
+
+Add ja get metodit on toteutettu samalla tekniikalla, kuin luennoilla esitettiin. Esimerkiksi lisäyksessä BST:n puolella tarkistetaan ensin voiko puuhun lisätä, tai että onko puuta vielä ylipäätään olemassa. Sitten TreeNode luokassa etsitään rekursiivisesti vertailemalla sille oikea paikka comparatoria käyttäen.
+
+ToArray metodiin sovelsin luentomateriaalissa esitettyä In-order traversal tapaa. BST:ssä luon taulukon, missä on key-value pareja, sekä luon AtomicIntegerin, mikä laskee indeksin. TreeNodessa tapahtuu sitten itse puussa liikkuminen In-order tavalla samalla kun AtomicInteger laskee indeksin.
+
+Toteutin lopulta muutkin metodit tällä In-order tavalla. Tätä AtomicIntegeriä käytin muissakin metodeissa, missä piti tehdä jotain indeksin perusteella. Sen käyttämisessä oli vähän opeteltavaa, mutta se on todella kätevä juuri tämän tyyppisiin tehtäviin.
+
+| BST Elements (n) | Add time | Add time/item | To sorted array time | Search time | Search time/item | get(index) time | get(index time/item) |
+|--------------|----------|---------------|----------------------|-------------|------------------|-----------------|----------------------|
+| 100          | 1        | 0.100         | 0                    | 4           | 0.0400           | 2               | 0.0200               |
+| 1000         | 2        | 0.0020        | 1                    | 2           | 0.0020           | 9               | 0.0090               |
+| 5000         | 9        | 0.0018        | 1                    | 5           | 0.0010           | 150             | 0.0300               |
+| 10000        | 8        | 0.0008        | 1                    | 8           | 0.0008           | 588             | 0.0588               |
+| 50000        | 55       | 0.0011        | 2                    | 51          | 0.0010           | 25165           | 0.5033               |
+| 100000       | 128      | 0.0013        | 5                    | 119         | 0.0012           | 133193          | 1.3319               |
+
+Yllä olevasta taulukosta näkyy se, miten BST toteutukseni suoriutuu testeistä minun tietokoneellani. Toteuttamani algoritmien kuten add ja get aikakompleksisuusluokka riippuu puun korkeudesta ja sen tasapainosta. itse aikakompleksisuusluokka on O(h), missä h on puun korkeus. Tämä tarkoittaa sitä, että se on pahimmassa tapauksessa aikakompleksisuusluokkaa O(n) ja parhaimmassa tapauksessa O(log n). Kaikki algoritmit on toteutettu A toteutustavalla.
+
+Taulukko puun maksimisyvyydestä:
+| Elements (n) | Maksimisyvyys |
+|--------------|-----------------------|
+| 10           | noin 4                |
+| 100          | noin 7                |
+| 1000         | noin 10               |
+| 5000         | noin 13               |
+| 10000        | noin 14               |
+| 50000        | noin 16               |
+| 100000       | noin 17               |
+| 1000000      | noin 20               |
+| 2000000      | noin 21               |
+
+Alla näkyy miten taulukkopohjainen toteutus suoriutui testeistä 50 000:n koodarin aineistolla. Lisäksi piirsin Add timestä pari kaaviota.
+
+| Simple container Elements (n) | Add time | Add time/item | To sorted array time | Search time | Search time/item | get(index) time | get(index time/item) |
+|--------------|----------|---------------|----------------------|-------------|------------------|-----------------|----------------------|
+| 50000        | 56839    | 1.1368        | 46                   | 68          | 0.0014           | 7               | 0.0001               |
+
+![BST Add time](BSTaddtime.png)
+![Simple container Add time](SCaddtime.png)
+
+Kuten kuvista näkee, BST suoriutuu huomattavasti nopeammin elementtien lisäämisessä. Kuitenkin BST:n indeksillä hakeminen on hitaampi kuin taulukkopohjaisessa toteutuksessa. Tämä johtuu siitä, että binäärisellä hakupuulla ei ole valmiita indeksejä, vaan ne pitää itse laskea. Minun toteutuksellani tämä aikakompleksisuusluokka on parhaassa tapauksessa O(log n) ja huonoimmassa tapauksessa O(n). Taulukkopohjaisessa toteutuksessa indeksillä hakeminen toimii nopeammin, sillä siinä voi suoraan hakea tietyllä indeksillä olevaa elementtiä (O(1)).
 
 ## 08-TASK
 

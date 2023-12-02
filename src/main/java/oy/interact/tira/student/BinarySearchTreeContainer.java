@@ -78,14 +78,13 @@ public class BinarySearchTreeContainer<K extends Comparable<K>, V> implements TI
 
     @Override
     public void ensureCapacity(int capacity) throws OutOfMemoryError, IllegalArgumentException {
-        if (capacity <= 0 || capacity < size()) {
-            throw new IllegalArgumentException("Invalid capacity");
-        }
+        //We dont need this method
     }
 
     @Override
     public void clear() {
         root = null;
+        size = 0;
     }
 
     @Override

@@ -11,7 +11,6 @@ public class TreeNode<K extends Comparable<K>, V> {
     private V value;
     private TreeNode<K, V> leftChild;
     private TreeNode<K, V> rightChild;
-    private Comparator<K> comparator;
     
     public TreeNode(K key, V value) {
         this.key = key;
