@@ -77,15 +77,13 @@ public class TreeNode<K extends Comparable<K>, V> {
     public V findV(Predicate<V> searcher){
         V val = null;
         if (searcher.test(value)){
-            val = value;
+            val = getValue();
         }
-        else{
-            if (leftChild != null){
-                leftChild.findV(searcher);
+        if (leftChild != null && val == null){
+                val = leftChild.findV(searcher);
             }
-            if (rightChild != null){
-                rightChild.findV(searcher);
-            }
+        if (rightChild != null && val == null){
+            val = rightChild.findV(searcher);
         }
         return val;
     }
