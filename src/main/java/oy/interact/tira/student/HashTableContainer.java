@@ -1,7 +1,6 @@
 package oy.interact.tira.student;
 
 import java.util.function.Predicate;
-
 import oy.interact.tira.util.Pair;
 import oy.interact.tira.util.TIRAKeyedContainer;
 
@@ -20,10 +19,10 @@ public class HashTableContainer<K extends Comparable <K>, V> implements TIRAKeye
         }
         do{
             int index = indexFor(key, collisionModifier, array.length);
-            if (array[index].getKey() == null){
+            if (array[index] == null){
                 array[index] = new Pair<>(key, value);
-                count++;
                 added = true;
+                count++;
             }
             else if(array[index].getKey().equals(key)) {
                 array[index] = new Pair<>(key, value);
@@ -36,7 +35,8 @@ public class HashTableContainer<K extends Comparable <K>, V> implements TIRAKeye
     }
 
     private int indexFor(K key, int collision, int arrayLength){
-        return ((key.hashCode() + collision * collision) & 0x7FFFFFFF) % arrayLength;
+        int hash = key.hashCode();
+        return ((hash + collision * collision) & 0x7FFFFFFF) % arrayLength;
     }
 
     private void reallocate(){
@@ -54,21 +54,30 @@ public class HashTableContainer<K extends Comparable <K>, V> implements TIRAKeye
                 newArray[index] = pair;
             }
         }
+        array = newArray;
     }
 
     @Override
     public V get(K key) throws IllegalArgumentException {
+        if (key.equals(null)){
+            throw new IllegalArgumentException("Key can't be null");
+        }
         int collisionModifier = 0;
         boolean found = false;
         V val = null;
         do{
             int index = indexFor(key, collisionModifier, array.length);
-            if (array[index].getKey().equals(key)){
-                val = array[index].getValue();
-                found = true;
+            if (array[index] != null){
+                if (array[index].getKey().equals(key)){
+                    val = array[index].getValue();
+                    found = true;
+                }
+                else{
+                    collisionModifier++;
+                }
             }
-            else{
-                collisionModifier++;
+            else {
+                return null;
             }
         } while (!found);
         return val;
@@ -87,11 +96,16 @@ public class HashTableContainer<K extends Comparable <K>, V> implements TIRAKeye
         V val = null;
         do{
             int index = indexFor(searcher, collisionModifier);
-            if (searcher.test(array[index].getValue())){
-                val = array[index].getValue();
-                found = true;
-            } else{
-                collisionModifier++;
+            if (array[index] != null){
+                if (searcher.test(array[index].getValue())){
+                    val = array[index].getValue();
+                    found = true;
+                } else{
+                    collisionModifier++;
+                }
+            }
+            else {
+                return null;
             }
         }while(!found);
         return val;
@@ -114,13 +128,26 @@ public class HashTableContainer<K extends Comparable <K>, V> implements TIRAKeye
 
     @Override
     public void ensureCapacity(int capacity) throws OutOfMemoryError, IllegalArgumentException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'ensureCapacity'");
-    }
+        Pair<K,V>[] newArray = new Pair[capacity];
+        for(int i = 0; i < array.length; i++){
+            Pair<K,V> pair = array[i];
+            if (pair != null){
+                int collisions = 0;
+                int index = indexFor(pair.getKey(), collisions, newArray.length);
+                while (newArray[index] != null){
+                    collisions++;
+                    index = indexFor(pair.getKey(), collisions, newArray.length);
+                }
+                newArray[index] = pair;
+            }
+        }
+        array = newArray;
+     }
 
     @Override
     public void clear() {
-        array = new Pair[STANDARD_SIZE]; 
+        array = new Pair[STANDARD_SIZE];
+        count = 0;
     }
 
     @Override
