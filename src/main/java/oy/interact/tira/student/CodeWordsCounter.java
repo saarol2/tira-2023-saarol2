@@ -8,6 +8,8 @@ import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import oy.interact.tira.factories.HashTableFactory;
 import oy.interact.tira.util.Pair;
@@ -113,6 +115,13 @@ public class CodeWordsCounter {
 		cumulativeTimeInMilliseconds += System.currentTimeMillis() - start;
 	}
 
+	Comparator<Pair<String, Integer>> myPairComparator = new Comparator<>(){
+		@Override
+		public int compare(Pair<String, Integer> pair1, Pair<String, Integer> pair2){
+			return pair2.getValue().compareTo(pair1.getValue());
+		}
+	};
+
 	@SuppressWarnings("unchecked")
 	public Pair<String, Integer>[] topCodeWords(int topCount) throws Exception {
 		if (null == codeWords) {
@@ -120,18 +129,28 @@ public class CodeWordsCounter {
 			result[0] = new Pair<>("Hashtable not implemented yet", 0);
 			return result;
 		}
-		// STUDENTS: TODO: Implement this pseudocode to get the top words sorted by frequency of use from hash table.
+		// Implement this pseudocode to get the top words sorted by frequency of use from hash table.
 		// 1. Get, from the hash table, pairs of all words and word counts from hash table to an array.
-		Pair<K,V>[] codeArray = codeWords.toArray();
-		Comparator<Pair<String, Integer>> myPairComparator = new Comparator<>();
+		Pair<String, Integer> [] codeArray = codeWords.toArray();
 		// 2. Use your fast sort algorithm to sort the array of pairs by word count, descending (!) order,
 		//    so that the word that is most frequent, is the first in the array.
+		Algorithms.fastSort(codeArray, myPairComparator);
 		// 3. Allocate a new array (let's call it result array) of size topCount,
+		int resultLength;
+		if (codeArray.length < topCount){
+			resultLength = codeArray.length;
+		} else {
+			resultLength = topCount;
+		}
+		Pair<String, Integer>[] resultArray = new Pair[resultLength];
 		//        or _smaller_ if the array has _less_ than topCount items.
 		//        Let's say the resulting new array size is n.
 		// 4. Put the first n items from the array of all pairs to this result array of size n.
+		for (int i = 0; i < resultLength; i++){
+			resultArray[i] = codeArray[i];
+		}
 		// 5. Return the results array to caller.
-		return null; // TODO: return the array of codeword/count pairs.
+		return resultArray; // return the array of codeword/count pairs.
 	}
 
 }

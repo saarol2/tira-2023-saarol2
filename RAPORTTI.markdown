@@ -187,4 +187,48 @@ Kuten kuvista näkee, BST suoriutuu huomattavasti nopeammin elementtien lisääm
 
 ## 08-TASK
 
+Tässä tehtävässä perehdyin hajautustauluihin. Toteutin oman hajautusfunktion, mikä laskee jokaiselle uniikille id:lle oman tiivisteen, mistä sitten lasketaan kyseiselle objektille oma indeksi, jotta se voidaan sijoittaa taulukkoon. Yritin monia eri tekniikoita tämän hajautusfunktion luomiseen, esimerkiksi bittisiirtoja, XOR-operaatiota ja muita laskentamenetelmiä. Lopulta Sain aikaan sellaisen funktion, missä ensimmäisten törmäysten määrä on keskimäärin vähän alle 30 %. Se ei varmasti ole paras mahdollinen, mutta mielestäni ihan ok. Alla vielä hajautusfunktion koodi.
+```Java
+@Override
+	public int hashCode() {
+		int hash = 0;
+        int length = id.length();
+        for (int index = 0; index < length; index++) {
+            int current = id.charAt(index);
+            hash ^= current;
+            hash = (hash << 5) - hash;
+		}
+        return hash;
+	}
+```
+
+Hajautustaulun muut funktiot oli suhteellisen helppo toteuttaa, kun ensin katsoi luentotallenteet ja muut materiaalit aiheesta. Päädyin toteuttamaan indeksin laskemisen quadratic probing tekniikalla, eli siinä plussataan hash-valueen törmäysten määrä korotettuna toiseen potenssiin, minkä jälkeen sille tehdään muut tarvittavat operaatiot (muuttaminen positiiviseksi ja taulukon kokoon sovittaminen). Totesin tämän vähentävän törmäysten määrää verrattuna lineraariseen luotaamiseen.
+Hashtable performancetest mittauksen tulokset:
+| Elements | Add time (ms) | Add time per item (ms) | To array and sorting (ms) | Search time (ms) | Search time per item (ms) | Test file                        |
+|----------|---------------|-------------------------|---------------------------|------------------|-------------------------------|----------------------------------|
+| 100      | 2             | 0.0200                  | 2                         | 9                | 0.0900                        | 100-city-coders.json             |
+| 1000     | 3             | 0.0030                  | 8                         | 3                | 0.0030                        | 1000-area-coders.json            |
+| 5000     | 10            | 0.0020                  | 8                         | 3                | 0.0006                        | 5000-town-coders.json            |
+| 10000    | 17            | 0.0017                  | 24                        | 8                | 0.0008                        | 10000-large-city-coders.json     |
+| 50000    | 134           | 0.0027                  | 105                       | 40               | 0.0008                        | 50000-country-coders.json        |
+| 100000   | 263           | 0.0026                  | 205                       | 72               | 0.0007                        | 100000-europe-coders.json        |
+| 1000000  | 2416          | 0.0024                  | 3311                      | 623              | 0.0006                        | 1000000-global-coders.json       |
+
+Kun näitä vertaa esimerkiksi task 7 BST:n mittaustuloksiin, huomaa että tämä on hitaampi kuin se. Esimerkiksi add metodi on kyllä muuten O(1) aikakompleksisuusluokkaa, mutta koska käytetään taulukoita, taulukko pitää välillä reallokoida, minkä aikakompleksisuusluokka on O(n). Lisäksi lisäämisen nopeuteen vaikuttaa hajautusfunktion toteutus. Jos törmäyksiä sattuu liikaa se voi hidastaa huomattavasti sen toimintaa. Myös esimerkiksi toArray() on aikakompleksisuusluokkaa O(n), sillä se iteroi koko taulukon läpi. Hajautustauluilla on kuitenkin se parempi puoli, että se laskee elementille indeksin paljon nopeammin, kuin BST. BST:ssä joudutaan käydä läpi lähes koko puu, kunnes löydetään haluttu indeksi, kun taas hajautustauluissa voidaan nopeasti vain laskea id:n perusteella sen tiivisteen arvo ja siten indeksi.
+Alla näyte siitä, miten nopeasti simple keyed container suoriutuu 100 000:n koodarin aineistolla:
+
+| Elements | Add time (ms) | Add time per item (ms) | To array and sorting (ms) | Search time (ms) | Search time per item (ms) | Test file                  |
+|----------|---------------|-------------------------|---------------------------|------------------|-------------------------------|-----------------------------|
+| 100000   | 61            | 0.0006                  | 78                        | 133286           | 1.3329                        | 100000-europe-coders.json  |
+
+Jos tätä vertailee siihen mitä hashtablen mittaus tulosti 100 000:n koodarin aineistosta voi esimerkiksi havaita, että hashtable on muuten hitaampi, paitsi että sen search time on paljon paljon nopeampi. Hashtablen get ja find metodit ovatkin aikakompleksisuusluokkaa O(1) (törmäysten määrä kylläkin nostaa tätä vähän).
+Alla vielä piirtämäni graafit Hajautustaulun lisäämiseen ja hakemiseen kuluvasta ajasta aineistoittain.
+![hashtable add time](hashtableaddtime.png)
+
+![hashtable search time](hashtablesearch.png)
+
+Kun olin saanut hajautustaulun tomimaan, siirryin toteuttamaan CodeWordsCounter ohjelmaa, mikä laskee sanojen määrän aineistoista. Tämä oli suhteellisen helppo toteuttaa, kun vain seurasi ohjeita mitkä sinne oli valmiiksi kommentoitu. Ajoin ohjelman kansiossa, missä minulla on joitain python kielen koodeja ja sain aikaan tällaisen taulukon. Sen mukaan käytetyin sana siellä on "def", mikä sopii kuvaan.
+
+![Codeword counter](codewords.png)
+
 ## 09-TASK

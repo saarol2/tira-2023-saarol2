@@ -7,8 +7,8 @@ import oy.interact.tira.util.TIRAKeyedContainer;
 public class HashTableContainer<K extends Comparable <K>, V> implements TIRAKeyedContainer<K,V> {
 
     private int count = 0;
-    private int STANDARD_SIZE = 20;
-    private Pair<K,V>[] array = new Pair[STANDARD_SIZE]; 
+    private int standardSize = 20;
+    private Pair<K,V>[] array = new Pair[standardSize]; 
 
     @Override
     public void add(K key, V value) throws OutOfMemoryError, IllegalArgumentException {
@@ -36,6 +36,7 @@ public class HashTableContainer<K extends Comparable <K>, V> implements TIRAKeye
 
     private int indexFor(K key, int collision, int arrayLength){
         int hash = key.hashCode();
+        //Quadratic probing
         return ((hash + collision * collision) & 0x7FFFFFFF) % arrayLength;
     }
 
@@ -146,7 +147,7 @@ public class HashTableContainer<K extends Comparable <K>, V> implements TIRAKeye
 
     @Override
     public void clear() {
-        array = new Pair[STANDARD_SIZE];
+        array = new Pair[standardSize];
         count = 0;
     }
 
