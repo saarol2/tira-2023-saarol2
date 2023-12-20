@@ -222,7 +222,9 @@ Alla näyte siitä, miten nopeasti simple keyed container suoriutuu 100 000:n ko
 | 100000   | 61            | 0.0006                  | 78                        | 133286           | 1.3329                        | 100000-europe-coders.json  |
 
 Jos tätä vertailee siihen mitä hashtablen mittaus tulosti 100 000:n koodarin aineistosta voi esimerkiksi havaita, että hashtable on muuten hitaampi, paitsi että sen search time on paljon paljon nopeampi. Hashtablen get ja find metodit ovatkin aikakompleksisuusluokkaa O(1) (törmäysten määrä kylläkin nostaa tätä vähän).
+
 Alla vielä piirtämäni graafit Hajautustaulun lisäämiseen ja hakemiseen kuluvasta ajasta aineistoittain.
+
 ![hashtable add time](hashtableaddtime.png)
 
 ![hashtable search time](hashtablesearch.png)
