@@ -234,3 +234,43 @@ Kun olin saanut hajautustaulun tomimaan, siirryin toteuttamaan CodeWordsCounter 
 ![Codeword counter](codewords.png)
 
 ## 09-TASK
+
+Tässä tehtävässä opin, miten verkkoja voi käyttää ohjelmoinnissa. Toteutin Tästä tehtävästä muut metodit, paitsi Dijkstran lyhyimmän polun algoritmin. Aloitin tehtävän paneutumalla ensiksi aiheen luentomateriaaleihin ja demoihin, mistä olikin paljon apua. Sen jälkeen aloin toteuttamaan perusmetodeja, joiden avulla verkon luominen toimii.
+
+Perusmetodien luomisessa en kohdannut suurempia haasteita, vähän piti muistella että miten jotkut Javan tietosäiliöluokat toimivat. Perusmetodien jälkeen aloin toteuttamaan leveyshaku-algoritmia. Tein sen alun perin seuraamalla luentojen demojen c-kielen esimerkkiä samanlaisesta algoritmista, mutta muuntelin sitä hieman, jotta voin käyttää sitä myös disconnectedVertices funktiossa. Siinä oli kätevä käyttää leveyshaku-algoritmia antamatta sille etsittävää kohdetta ollenkaan, jolloin se käy käytännössä koko verkon läpi ellei verkko ole disconnected.
+
+Leveyshakualgoritmissa tutkitaan lähtö-vertexistä lähtien kaikki haaraumat yhtä aikaa. Eli vertexistä mennään reunaa pitkin toiseen vertexiin, mistä taas lähtee usempi reuna muihin vertexeihin ja niin edelleen.
+
+Syvyyshaku-algoritmikin oli helppo toteuttaa vain seuraamalla demon ohjeita. Sitä piti vähän sovittaa toimimaan java-kielen kanssa, mutta sain sen lopulta toimimaan suhteellisen hyvin. Siinä siis mennään reunoja pitkin niin syvälle kun pääsee. Kun ei enää pääse syvemmälle mennään ikään kuin takaperin edelliseen vertexiin ja mennään taas toista haaraa pitkin niin syvälle kuin pääsee. Tätä toistetaan niin kauan kunnes etsittävä kohde löytyy.
+
+disconnnectedVertices-metodin toteutin käytännössä siten, että se käy leveyshaku-algoritmillä läpi jostain vertexistä lähtien verkon niin pitkälle kuin pääsee ja katsoo jäikö joku vertex käymättä läpi. Jos jäi, niin verkko on disconnected. isDisconnected-metodi taas tarkistaa onko graafi connected vai disconnected kutsumalla disconnectedVertices-metodia.
+
+Lopulta vielä toteutin metodin hasCycles, mikä tarkistaa onko verkossa syklejä. Tähän piti tehdä pari apu-algoritmia, sillä syklien tarkistus menee eritavalla riippuen siitä, ovatko reunat suunnattu vai ei. Nimittäin jos reuna on suuntaamaton, vertexistä A pääsee vertexiin B ja toisin päin. Tämä ei kuitenkaan tarkoita että verkossa on sykli.
+
+Ensin toteutin metodin directedHasCycles, mikä tarkistaa suunnatuilla reunoilla, että onko verkko syklinen vai ei. Se toimii niin että tallennetaan listaan kaikki vertexit sitä mukaan kun niitä läpi ja jos törmätään johonkin vertexiin uudestaan, verkko on syklinen. UndirectedHasCycles toimii muuten samalla tavalla, mutta muuntelin sitä niin että se ei tulkitse vertexien välistä edestakaista kulkemista sykliksi.
+
+En enää lähtenyt toteuttamaan Dijkstran algoritmia, sillä totesin tämän riittävän minulle. Korjasin kuitenkin verkon täytön hitauden tehtävänannon ohjeiden mukaisesti. Se muuttikin kivasti aikaisemman O(n^3)-operaation aikakompleksisuuden uudeksi aikakompleksisuudeksi O(1).
+Alhaalla on taulukko GraphPerformanceTest mittausten tuloksista:
+
+| Vertice count | Edge count | Fill time (ms) | Fill time/V+E (ms) | BFS time (ms) | DFS time (ms) | Dijkstra time (ms) | Testfile                           |
+|---------------|------------|----------------|---------------------|---------------|---------------|---------------------|------------------------------------|
+| 10            | 40         | 2              | 0.0400              | 0             | 0             | 0                   | 10-village-coders.json            |
+| 100           | 532        | 3              | 0.0047              | 2             | 2             | 0                   | 100-city-coders.json              |
+| 1000          | 5613       | 7              | 0.0011              | 22            | 19            | 0                   | 1000-area-coders.json             |
+| 5000          | 27602      | 54             | 0.0017              | 343           | 492           | 0                   | 5000-town-coders.json             |
+| 10000         | 56551      | 39             | 0.0006              | 1273          | 1429          | 0                   | 10000-large-city-coders.json      |
+| 50000         | 280174     | 410            | 0.0012              | 161816        | 169512        | 0                   | 50000-country-coders.json         |
+
+Kuten näkyy, Fill time pysyy todella maltillisena verrattuna siihen, että ennen lisäysfunktion korjaustoimia 50 000 koodarin testiaineistolla meni yli 15 minuuttia täyttää verkko. Alla kuva piirtämästäni graafista BFS ja DFS algoritmien ajamiseen kuluneesta ajasta.
+
+![BFS ja DFS time](BFS-DFS-time.png)
+
+Kuten graafista näkyy, ne toimivat aikalailla yhtä nopeasti, joskin ajettuani tämän testin useammin BFS (leveyshaku) toimi yleensä nopeammin kuin DFS (syvyyshaku). BFS siis löytää kohteen verkosta yleensä tehokkaammin.
+
+Käytin toteutuksessani HashMap:ia Hashtablen sijaan. Kokeilin mitä tapahtuu testien aikamittauksille jos käyttääkin Hashtablea ja tulin siihen tulokseen että alkuperäinen HashMap toteutukseni on vähän nopeampi.
+
+createVertex, getVertices, addEdge, addDirectedEdge ja getEdges aikakompleksisuudeltaan O(1).
+leveyshaun aikakompleksisuus on O(V+E), missä V=vertex ja E=edge. Se siis käy verkon läpi jokaisen solmun ja reunan kautta korkeintaan yhden kerran.
+Metodit, mitkä tutkii onko verkko connected vai disconnected on myös O(E+V), koska siinä käytetään leveyshaku-algoritmia. Taas siis käydään jokainen solmu ja reuna läpi korkeintaan kerran.
+Syvyyshaun aikakompleksisuus on myös O(V+E), sillä siinäkin käydään jokainen solmu kerran läpi reunojen kautta.
+hasCycles metodin aikakompleksisuus on O(V+E). Siinä käytetään DFS tekniikaa solmujen läpikäymiseen, minkä aikakompleksisuus on myös O(v+E)

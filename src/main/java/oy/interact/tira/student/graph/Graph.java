@@ -1,12 +1,17 @@
 package oy.interact.tira.student.graph;
 
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 
 import oy.interact.tira.student.graph.Edge.EdgeType;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -36,13 +41,15 @@ public class Graph<T> {
     * a suitable type of Map, depending on application needs.
     */
    private Map<Vertex<T>, List<Edge<T>>> edgeList = null;
-   
+   private Hashtable<Integer, Vertex<T>> vertices = null;
+
    /**
     * Constructor instantiates a suitable Map data structure
     * depending on the application requirements.
     */
    public Graph() {
-      // TODO: Student: allocate necessary member variables.
+      this.edgeList = new HashMap<>();
+      this.vertices = new Hashtable<>();
    }
 
    /**
@@ -58,8 +65,11 @@ public class Graph<T> {
     * @return Returns the created vertex, placed in the graph's edge list.
     */
    public Vertex<T> createVertexFor(T element) {
-      // TODO: Student, implement this.
-      return null;
+      Vertex<T> vertex = new Vertex<>(element);
+      List<Edge<T>> emptyEdgeList = new ArrayList<>();      
+      edgeList.put(vertex, emptyEdgeList);
+      vertices.put(vertex.hashCode(), vertex);
+      return vertex;
    }
 
    /**
@@ -68,8 +78,7 @@ public class Graph<T> {
     * @return A Set with all the vertices of the graph.
     */
    public Set<Vertex<T>> getVertices() {
-      // TODO: Student, implement this.
-      return null;
+      return edgeList.keySet();
    }
 
    /**
@@ -81,7 +90,17 @@ public class Graph<T> {
     * @param weight The weight of the edge.
     */
    public void addEdge(Edge.EdgeType type, Vertex<T> source, Vertex<T> destination, double weight) {
-      // TODO: Student, implement this.
+      if (source != null && destination != null){
+         switch (type){
+            case DIRECTED:
+               addDirectedEdge(source, destination, weight);
+               break;
+            case UNDIRECTED:
+               addDirectedEdge(source, destination, weight);
+               addDirectedEdge(destination, source, weight);
+               break;
+         }
+      }
    }
 
    /**
@@ -92,7 +111,10 @@ public class Graph<T> {
     * @param weight The weight of the edge.
     */
    public void addDirectedEdge(Vertex<T> source, Vertex<T> destination, double weight) {
-      // TODO: Student, implement this.
+      if (source != null && destination != null){
+         Edge<T> edge = new Edge<>(source, destination, weight);
+         edgeList.get(source).add(edge);
+      }
    }
 
    /**
@@ -102,8 +124,7 @@ public class Graph<T> {
     * @return Returns the edges of the vertex or null if no edges from the source.
     */
    public List<Edge<T>> getEdges(Vertex<T> source) {
-      // TODO: Student, implement this.
-      return null;
+      return edgeList.get(source);
    }
 
    /**
@@ -115,7 +136,11 @@ public class Graph<T> {
     * @return The vertex containing the node, or null if no vertex contains the element.
     */
    public Vertex<T> getVertexFor(T element) {
-      // TODO: Student, implement this.
+      int elementHash = element.hashCode();
+      Vertex<T> vertex = vertices.get(elementHash);
+      if (vertex != null && vertex.getElement().equals(element)){
+         return vertex;
+      }
       return null;
    }
 
@@ -128,10 +153,55 @@ public class Graph<T> {
     * @return Returns all the visited vertices traversed while doing BFS, in order they were found, or an empty list.
     */
    public List<Vertex<T>> breadthFirstSearch(Vertex<T> from, Vertex<T> target) {
+      Queue<Vertex<T>> queue = new LinkedList<>();
+      Set<Vertex<T>> enqueued = new HashSet<>();
       List<Vertex<T>> visited = new ArrayList<>();
-      // TODO: Student, implement this.
+      if (from == null){
+         from = edgeList.keySet().iterator().next();
+      }
+      if (target == null){
+         Vertex<T> vertex = from;
+            if (!enqueued.contains(vertex)){
+               queue.add(vertex);
+               enqueued.add(vertex);
+               while(!queue.isEmpty()){
+                  Vertex<T> currentVertex = queue.poll();
+                  visited.add(currentVertex);
+                  List<Edge<T>> adjacentEdges = edgeList.get(currentVertex);
+                  if (adjacentEdges != null){
+                     for (Edge<T> edge : adjacentEdges) {
+                        if (!enqueued.contains(edge.getDestination())) {
+                            queue.add(edge.getDestination());
+                            enqueued.add(edge.getDestination());
+                        }
+                  }
+               }
+            }
+         }
+      } else{
+         queue.add(from);
+         enqueued.add(from);
+         while (!queue.isEmpty()) {
+               Vertex<T> vertex = queue.poll();
+               visited.add(vertex);
+               if (vertex.equals(target)) {
+                  return visited;
+               }
+               List<Edge<T>> adjacentEdges = edgeList.get(vertex);
+               if (adjacentEdges != null) {
+                  for (Edge<T> edge : adjacentEdges) {
+                     if (!enqueued.contains(edge.getDestination())) {
+                           queue.add(edge.getDestination());
+                           enqueued.add(edge.getDestination());
+                     }
+                  }
+               }
+         }
+      }
       return visited;
    }
+
+
 
    /**
     * Does depth first search (DFS) of the graph starting from a vertex.
@@ -146,9 +216,37 @@ public class Graph<T> {
     */
    public List<Vertex<T>> depthFirstSearch(Vertex<T> from, Vertex<T> target) {
       List<Vertex<T>> visited = new ArrayList<>();
-      // TODO: Student, implement this.
+      Set<Vertex<T>> pushed = new HashSet<>();
+      Stack<Vertex<T>> stack = new Stack<>();
+      stack.push(from);
+      pushed.add(from);
+      visited.add(from);
+      while (!stack.isEmpty()) {
+         Vertex<T> currentVertex = stack.peek();
+         List<Edge<T>> adjacentEdges = edgeList.get(currentVertex);
+         if (adjacentEdges == null || adjacentEdges.isEmpty()) {
+               stack.pop();
+         }
+         boolean unvisitedEdge = false;
+         for (Edge<T> edge : adjacentEdges) {
+               if (!pushed.contains(edge.getDestination())) {
+                  stack.push(edge.getDestination());
+                  pushed.add(edge.getDestination());
+                  visited.add(edge.getDestination());
+                  if (edge.getDestination().equals(target)) {
+                     return visited;
+                  }
+                  unvisitedEdge = true;
+                  break;
+               }
+         }
+         if (!unvisitedEdge) {
+               stack.pop();
+         }
+      }
       return visited;
    }
+
    
    /**
     * Returns a non-empty list if the graph is disconnected. A disconnected graph is a
@@ -163,7 +261,13 @@ public class Graph<T> {
     */
    public List<T> disconnectedVertices(Vertex<T> toStartFrom) {
       List<T> notInVisited = new ArrayList<>();
-      // TODO: Student, implement this.
+      Set<Vertex<T>> allVertices = edgeList.keySet();
+      List<Vertex<T>> visited = breadthFirstSearch(toStartFrom, null);
+      for (Vertex<T> vertex : allVertices){
+         if (!visited.contains(vertex)){
+            notInVisited.add(vertex.getElement());
+         }
+      }
       return notInVisited;
    }
 
@@ -175,7 +279,10 @@ public class Graph<T> {
     * @return True if the graph is disconnected.
     */
    public boolean isDisconnected(Vertex<T> toStartFrom) {
-      // TODO: Student, implement this.
+      List<T> disconnectedVertices = disconnectedVertices(toStartFrom);
+      if (!disconnectedVertices.isEmpty()){
+         return true;
+      }
       return false;
    }
 
@@ -194,9 +301,64 @@ public class Graph<T> {
     * @return Returns true if the graph has cycles.
     */
    public boolean hasCycles(EdgeType edgeType, Vertex<T> fromVertex) {
-      // TODO: Student, implement this.
+      if (fromVertex == null){
+         fromVertex = edgeList.keySet().iterator().next();
+      }
+      if (isDisconnected(fromVertex)){
+         return false;
+      }
+      List<Vertex<T>> visited = new ArrayList<>();
+      if (edgeType == EdgeType.UNDIRECTED){
+         return UndirectedHasCycles(fromVertex, visited, null);
+      }
+      else{
+         return directedHasCycles(fromVertex, visited);
+      }
+   }
+
+   private boolean UndirectedHasCycles(Vertex<T> vertex, List<Vertex<T>> visited, Vertex<T> precedingVertex){
+      visited.add(vertex);
+      List<Vertex<T>> neighbors = getNeighbors(vertex);
+      for (Vertex<T> neighbor : neighbors){
+         if (neighbor.equals(precedingVertex)){
+            continue;
+         }
+         if (visited.contains(neighbor)){
+            return true;
+         }
+         if (UndirectedHasCycles(neighbor, visited, vertex)){
+            return true;
+         }
+      }
       return false;
    }
+
+   private List<Vertex<T>> getNeighbors(Vertex<T> vertex) {
+      List<Vertex<T>> neighbors = new ArrayList<>();
+      List<Edge<T>> edges = edgeList.get(vertex);
+      if (edges != null) {
+          for (Edge<T> edge : edges) {
+              Vertex<T> destination = edge.getDestination();
+              neighbors.add(destination);
+          }
+      }
+      return neighbors;
+  }
+
+   private boolean directedHasCycles(Vertex<T> vertex, List<Vertex<T>> visited){
+      visited.add(vertex);
+      for (Edge<T> edge : edgeList.get(vertex)){
+         Vertex<T> destination = edge.getDestination();
+         if (visited.contains(destination)){
+            return true;
+         }
+         else if (directedHasCycles(destination, visited)){
+            return true;
+         }
+      }
+      return false;
+   }
+   
 
    // Dijkstra starts here.
 
